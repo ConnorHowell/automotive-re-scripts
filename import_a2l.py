@@ -33,9 +33,18 @@ for c in characteristics:
         l = l.strip()
         if len(l) > 0:
             if namefound == 0:
-                name = l
+                name = l.split(' "')[0]
                 namefound = 1
-            elif l.startswith("0x"):
+            elif (
+                l.startswith("VALUE ")
+                or l.startswith("CURVE ")
+                or l.startswith("ASCII ")
+                or l.startswith("MAP ")
+            ):
+                addr = l.split(" ")[1]
+                addrfound = 1
+                break
+            elif l.startswith("0x") and len(l) > 4:
                 addr = l
                 addrfound = 1
                 break
@@ -54,7 +63,7 @@ for m in measurements:
         l = l.strip()
         if (len(l) > 0):
             if (namefound == 0):
-                name = l
+                name = l.split(' "')[0]
                 namefound = 1
             elif (l.startswith("ECU_ADDRESS")):
                 addr = l[12:]
@@ -75,7 +84,7 @@ for a in axis_pts:
         l = l.strip()
         if len(l) > 0:
             if namefound == 0:
-                name = l
+                name = l.split(' "')[0]
                 namefound = 1
             elif l.startswith("0x"):
                 addr = l
